@@ -2,44 +2,57 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>RPClogo DVD</title>
+  <title>RPClogo DVD - Web Version</title>
   <link rel="icon" href="logo2.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     @font-face {
-      font-family: 'League Spartan';
-      src: url('LeagueSpartan-Bold.woff2') format('woff2'),
-           url('LeagueSpartan-Bold.woff') format('woff');
+      font-family: "League Spartan";
+      src: url("LeagueSpartan-Bold.woff2") format("woff2"),
+           url("LeagueSpartan-Bold.woff") format("woff");
       font-weight: bold;
-      font-style: normal;
     }
+
     html, body {
-      margin: 0; 
+      margin: 0;
       padding: 0;
       background: black;
+      color: white;
+      font-family: "League Spartan", sans-serif;
       height: 100%;
       overflow: hidden;
-      font-family: 'League Spartan', sans-serif;
+      position: relative;
     }
+
+    #animation {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
     #logo {
       position: absolute;
       width: 150px;
       height: auto;
-      visibility: hidden; /* hide until positioned */
+      visibility: hidden;
+      user-select: none;
+      pointer-events: none;
     }
+
     .preload {
       display: none;
     }
   </style>
 </head>
 <body>
-  <img id="logo" src="4.png" alt="RPC Logo" />
-
-  <!-- Preload images -->
-  <img class="preload" src="1.png" alt="" />
-  <img class="preload" src="2.png" alt="" />
-  <img class="preload" src="3.png" alt="" />
-  <img class="preload" src="4.png" alt="" />
-  <img class="preload" src="5.png" alt="" />
+  <div id="animation">
+    <img id="logo" src="4.png" alt="RPC Logo" />
+    <img class="preload" src="1.png" />
+    <img class="preload" src="2.png" />
+    <img class="preload" src="3.png" />
+    <img class="preload" src="4.png" />
+    <img class="preload" src="5.png" />
+  </div>
 
   <script>
     const logo = document.getElementById("logo");
@@ -54,13 +67,63 @@
     }
 
     let speed = 3;
-    let dx = speed;
-    let dy = speed;
+    let dx = speed * (Math.random() < 0.5 ? -1 : 1);
+    let dy = speed * (Math.random() < 0.5 ? -1 : 1);
     let x = 100;
     let y = 100;
 
-    if (Math.random() < 0.5) dx *= -1;
-    if (Math.random() < 0.5) dy *= -1;
-
     function changeLogo() {
-      curre
+      currentLogo = (currentLogo % totalLogos) + 1;
+      logo.src = preloaded[currentLogo - 1].src;
+    }
+
+    function update() {
+      const w = logo.clientWidth;
+      const h = logo.clientHeight;
+      const sw = window.innerWidth;
+      const sh = window.innerHeight;
+
+      let bounced = false;
+
+      if (x + dx < 0 || x + dx + w > sw) {
+        dx *= -1;
+        bounced = true;
+      }
+
+      if (y + dy < 0 || y + dy + h > sh) {
+        dy *= -1;
+        bounced = true;
+      }
+
+      x += dx;
+      y += dy;
+
+      logo.style.left = `${x}px`;
+      logo.style.top = `${y}px`;
+
+      if (bounced) {
+        const hitCorner = (x <= 0 || x + w >= sw) && (y <= 0 || y + h >= sh);
+        if (hitCorner) console.log("Corner hit");
+        changeLogo();
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    window.onload = () => {
+      x = Math.random() * (window.innerWidth - logo.clientWidth);
+      y = Math.random() * (window.innerHeight - logo.clientHeight);
+
+      logo.style.left = `${x}px`;
+      logo.style.top = `${y}px`;
+      logo.style.visibility = "visible";
+
+      update();
+    };
+
+    if (document.readyState === "complete") {
+      window.onload();
+    }
+  </script>
+</body>
+</html>
