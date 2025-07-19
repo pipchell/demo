@@ -1,113 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RPClogo DVD</title>
-  <link rel="icon" href="logo2.png" type="image/png">
   <style>
     html, body {
       margin: 0;
       padding: 0;
       background: black;
-      height: 100%;
+      color: white;
+      font-family: "Segoe UI", sans-serif;
       overflow: hidden;
     }
 
-    #logo {
-      position: absolute;
-      width: 150px;
-      height: auto;
-      visibility: hidden; /* Hide until positioned */
+    #landing {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
     }
 
-    .preload {
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 30px;
+    }
+
+    .button {
+      width: 250px;
+      margin: 10px;
+      padding: 15px;
+      background-color: #17D860;
+      color: black;
+      text-decoration: none;
+      font-size: 1.2em;
+      border-radius: 12px;
+      transition: background 0.2s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background-color: #12b94f;
+    }
+
+    iframe {
       display: none;
+      border: none;
+      width: 100vw;
+      height: 100vh;
     }
   </style>
 </head>
 <body>
-  <img id="logo" src="4.png" alt="RPC Logo">
-  
-  <!-- Preload logos -->
-  <img class="preload" src="1.png" alt="">
-  <img class="preload" src="2.png" alt="">
-  <img class="preload" src="3.png" alt="">
-  <img class="preload" src="4.png" alt="">
-  <img class="preload" src="5.png" alt="">
+  <div id="landing">
+    <h1>RPClogo DVD</h1>
+    <a class="button" href="/RPClogoDVD.exe" download>💾 Download .exe App</a>
+    <button class="button" onclick="launchWebVersion()">🌐 Use Web Version</button>
+  </div>
+
+  <iframe id="webVersion" src="https://dvd.rpcgroup.xyz"></iframe>
 
   <script>
-    const logo = document.getElementById("logo");
-    const totalLogos = 5;
-    let currentLogo = 4;
-
-    const preloaded = [];
-    for (let i = 1; i <= totalLogos; i++) {
-      const img = new Image();
-      img.src = `${i}.png`;
-      preloaded.push(img);
+    function launchWebVersion() {
+      document.getElementById("landing").style.display = "none";
+      document.getElementById("webVersion").style.display = "block";
     }
-
-    let speed = 3;
-    let dx = speed;
-    let dy = speed;
-    let x = 100;
-    let y = 100;
-
-    // Randomize initial direction (45° but flipped randomly)
-    if (Math.random() < 0.5) dx *= -1;
-    if (Math.random() < 0.5) dy *= -1;
-
-    function changeLogo() {
-      currentLogo = (currentLogo % totalLogos) + 1;
-      logo.src = preloaded[currentLogo - 1].src;
-    }
-
-    function update() {
-      const w = logo.clientWidth;
-      const h = logo.clientHeight;
-      const sw = window.innerWidth;
-      const sh = window.innerHeight;
-
-      let bounced = false;
-
-      if (x + dx < 0 || x + dx + w > sw) {
-        dx *= -1;
-        bounced = true;
-      }
-
-      if (y + dy < 0 || y + dy + h > sh) {
-        dy *= -1;
-        bounced = true;
-      }
-
-      x += dx;
-      y += dy;
-
-      logo.style.left = `${x}px`;
-      logo.style.top = `${y}px`;
-
-      if (bounced) {
-        const hitCorner = (x <= 0 || x + w >= sw) && (y <= 0 || y + h >= sh);
-        if (hitCorner) {
-          console.log("🎯 Corner hit!");
-          // You can add corner-only behavior here
-        }
-        changeLogo();
-      }
-
-      requestAnimationFrame(update);
-    }
-
-    window.onload = () => {
-      x = Math.random() * (window.innerWidth - logo.clientWidth);
-      y = Math.random() * (window.innerHeight - logo.clientHeight);
-
-      logo.style.left = `${x}px`;
-      logo.style.top = `${y}px`;
-      logo.style.visibility = "visible"; // Reveal after positioning
-
-      update();
-    };
   </script>
 </body>
 </html>
