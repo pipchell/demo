@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>RPClogo DVD</title>
+  <link rel="icon" href="logo2.png" type="image/png">
   <style>
     html, body {
       margin: 0;
       padding: 0;
       background: black;
-      color: white;
-      font-family: "Segoe UI", sans-serif;
+      height: 100%;
       overflow: hidden;
+      font-family: "Segoe UI", sans-serif;
+      color: white;
     }
 
     #landing {
@@ -21,6 +22,7 @@
       justify-content: center;
       height: 100vh;
       text-align: center;
+      background: black;
     }
 
     h1 {
@@ -46,27 +48,118 @@
       background-color: #12b94f;
     }
 
-    iframe {
+    #animation {
       display: none;
-      border: none;
-      width: 100vw;
-      height: 100vh;
+    }
+
+    #logo {
+      position: absolute;
+      width: 150px;
+      height: auto;
+      visibility: hidden;
+    }
+
+    .preload {
+      display: none;
     }
   </style>
 </head>
 <body>
+
+  <!-- Welcome Screen -->
   <div id="landing">
     <h1>RPClogo DVD</h1>
-    <a class="button" href="/RPClogoDVD.exe" download>💾 Download .exe App</a>
+    <a class="button" href="https://gofile.io/d/8GA9SW" target="_blank">💾 Download .exe App</a>
     <button class="button" onclick="launchWebVersion()">🌐 Use Web Version</button>
   </div>
 
-  <iframe id="webVersion" src="https://dvd.rpcgroup.xyz"></iframe>
+  <!-- Animation Screen -->
+  <div id="animation">
+    <img id="logo" src="4.png" alt="RPC Logo">
+    <img class="preload" src="1.png" alt="">
+    <img class="preload" src="2.png" alt="">
+    <img class="preload" src="3.png" alt="">
+    <img class="preload" src="4.png" alt="">
+    <img class="preload" src="5.png" alt="">
+  </div>
 
   <script>
     function launchWebVersion() {
       document.getElementById("landing").style.display = "none";
-      document.getElementById("webVersion").style.display = "block";
+      document.getElementById("animation").style.display = "block";
+
+      const logo = document.getElementById("logo");
+      const totalLogos = 5;
+      let currentLogo = 4;
+
+      const preloaded = [];
+      for (let i = 1; i <= totalLogos; i++) {
+        const img = new Image();
+        img.src = `${i}.png`;
+        preloaded.push(img);
+      }
+
+      let speed = 3;
+      let dx = speed;
+      let dy = speed;
+      let x = 100;
+      let y = 100;
+
+      if (Math.random() < 0.5) dx *= -1;
+      if (Math.random() < 0.5) dy *= -1;
+
+      function changeLogo() {
+        currentLogo = (currentLogo % totalLogos) + 1;
+        logo.src = preloaded[currentLogo - 1].src;
+      }
+
+      function update() {
+        const w = logo.clientWidth;
+        const h = logo.clientHeight;
+        const sw = window.innerWidth;
+        const sh = window.innerHeight;
+
+        let bounced = false;
+
+        if (x + dx < 0 || x + dx + w > sw) {
+          dx *= -1;
+          bounced = true;
+        }
+
+        if (y + dy < 0 || y + dy + h > sh) {
+          dy *= -1;
+          bounced = true;
+        }
+
+        x += dx;
+        y += dy;
+
+        logo.style.left = `${x}px`;
+        logo.style.top = `${y}px`;
+
+        if (bounced) {
+          const hitCorner = (x <= 0 || x + w >= sw) && (y <= 0 || y + h >= sh);
+          if (hitCorner) console.log("🎯 Corner hit!");
+          changeLogo();
+        }
+
+        requestAnimationFrame(update);
+      }
+
+      window.onload = () => {
+        x = Math.random() * (window.innerWidth - logo.clientWidth);
+        y = Math.random() * (window.innerHeight - logo.clientHeight);
+
+        logo.style.left = `${x}px`;
+        logo.style.top = `${y}px`;
+        logo.style.visibility = "visible";
+
+        update();
+      };
+
+      if (document.readyState === "complete") {
+        window.onload();
+      }
     }
   </script>
 </body>
