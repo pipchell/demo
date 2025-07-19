@@ -5,7 +5,6 @@
   <title>RPClogo DVD</title>
   <link rel="icon" href="logo2.png" type="image/png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
     @font-face {
       font-family: "League Spartan";
@@ -18,64 +17,53 @@
       margin: 0;
       padding: 0;
       background: black;
+      color: white;
+      font-family: "League Spartan", sans-serif;
       height: 100%;
       overflow: hidden;
-      font-family: "League Spartan", sans-serif;
-      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    #landing {
-      display: flex;
+    #blocked {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #main {
+      display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-      background: black;
-      padding: 20px;
     }
 
     h1 {
       font-size: 2em;
       margin-bottom: 20px;
-      font-weight: bold;
     }
 
     .button {
-      width: 100%;
-      max-width: 220px;
-      margin: 8px 0;
-      padding: 12px 18px;
-      background-color: #17D860;
+      background: #17D860;
       color: black;
-      text-decoration: none;
+      border: none;
+      padding: 12px 18px;
+      margin: 10px;
       font-size: 1em;
       border-radius: 12px;
-      transition: background 0.2s ease;
-      border: none;
       cursor: pointer;
       font-family: "League Spartan", sans-serif;
       font-weight: bold;
+      text-decoration: none;
     }
 
     .button:hover {
-      background-color: #12b94f;
-    }
-
-    #mobile-warning {
-      font-size: 0.85em;
-      margin-top: 12px;
-      color: #aaa;
-      max-width: 95%;
-    }
-
-    #animation {
-      display: none;
+      background: #12b94f;
     }
 
     #logo {
       position: absolute;
-      width: 90px;
+      width: 150px;
       height: auto;
       visibility: hidden;
     }
@@ -83,53 +71,39 @@
     .preload {
       display: none;
     }
-
-    @media (min-width: 768px) {
-      h1 {
-        font-size: 2.5em;
-      }
-
-      .button {
-        font-size: 1.2em;
-        max-width: 250px;
-      }
-
-      #logo {
-        width: 150px;
-      }
-    }
   </style>
 </head>
 <body>
+  <div id="blocked">
+    <h1>Sorry, this site is not available on mobile devices.</h1>
+    <p>Please visit from a desktop computer.</p>
+  </div>
 
-  <!-- Welcome Screen -->
-  <div id="landing">
+  <div id="main">
     <h1>RPClogo DVD</h1>
     <a class="button" href="https://gofile.io/d/8GA9SW" target="_blank">Download .exe App</a>
     <button class="button" onclick="launchWebVersion()">Use Web Version</button>
-    <div id="mobile-warning" style="display: none;">
-      .exe apps only run on Windows PCs. Use the Web Version on mobile or Mac.
-    </div>
   </div>
 
-  <!-- Animation Screen -->
   <div id="animation">
     <img id="logo" src="4.png" alt="RPC Logo">
-    <img class="preload" src="1.png" alt="">
-    <img class="preload" src="2.png" alt="">
-    <img class="preload" src="3.png" alt="">
-    <img class="preload" src="4.png" alt="">
-    <img class="preload" src="5.png" alt="">
+    <img class="preload" src="1.png">
+    <img class="preload" src="2.png">
+    <img class="preload" src="3.png">
+    <img class="preload" src="4.png">
+    <img class="preload" src="5.png">
   </div>
 
   <script>
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     if (isMobile) {
-      document.getElementById("mobile-warning").style.display = "block";
+      document.getElementById("blocked").style.display = "block";
+    } else {
+      document.getElementById("main").style.display = "flex";
     }
 
     function launchWebVersion() {
-      document.getElementById("landing").style.display = "none";
+      document.getElementById("main").style.display = "none";
       document.getElementById("animation").style.display = "block";
 
       const logo = document.getElementById("logo");
