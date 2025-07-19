@@ -5,13 +5,21 @@
   <title>RPClogo DVD</title>
   <link rel="icon" href="logo2.png" type="image/png">
   <style>
+    @font-face {
+      font-family: "League Spartan";
+      src: url("LeagueSpartan-Bold.woff2") format("woff2"),
+           url("LeagueSpartan-Bold.woff") format("woff");
+      font-weight: bold;
+      font-style: normal;
+    }
+
     html, body {
       margin: 0;
       padding: 0;
       background: black;
       height: 100%;
       overflow: hidden;
-      font-family: "Segoe UI", sans-serif;
+      font-family: "League Spartan", sans-serif;
       color: white;
     }
 
@@ -28,6 +36,7 @@
     h1 {
       font-size: 2.5em;
       margin-bottom: 30px;
+      font-weight: bold;
     }
 
     .button {
@@ -42,6 +51,8 @@
       transition: background 0.2s ease;
       border: none;
       cursor: pointer;
+      font-family: "League Spartan", sans-serif;
+      font-weight: bold;
     }
 
     .button:hover {
@@ -69,8 +80,8 @@
   <!-- Welcome Screen -->
   <div id="landing">
     <h1>RPClogo DVD</h1>
-    <a class="button" href="https://gofile.io/d/8GA9SW" target="_blank">💾 Download .exe App</a>
-    <button class="button" onclick="launchWebVersion()">🌐 Use Web Version</button>
+    <a class="button" href="https://gofile.io/d/8GA9SW" target="_blank">Download .exe App</a>
+    <button class="button" onclick="launchWebVersion()">Use Web Version</button>
   </div>
 
   <!-- Animation Screen -->
@@ -139,7 +150,7 @@
 
         if (bounced) {
           const hitCorner = (x <= 0 || x + w >= sw) && (y <= 0 || y + h >= sh);
-          if (hitCorner) console.log("🎯 Corner hit!");
+          if (hitCorner) console.log("Corner hit");
           changeLogo();
         }
 
